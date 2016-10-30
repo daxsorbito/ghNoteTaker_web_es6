@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "0.15.2",
     "firebase": "3.5.1",
+    "re-base": "2.2.0",
     "react": "15.3.2",
     "react-dom": "15.3.2",
     "react-router": "2.8.1",
