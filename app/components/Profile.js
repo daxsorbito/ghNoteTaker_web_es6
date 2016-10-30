@@ -1,41 +1,44 @@
 import React from 'react'
-import Router from 'react-router'
 import Repos from './Github/Repos'
 import UserProfile from './Github/UserProfile'
 import Notes  from './Notes/Notes'
-import ReactFireMixin from 'reactfire'
-import Firebase from 'firebase'
 import getGithubInfo from '../utils/helpers'
+import Rebase from 're-base'
 
 var config = {
   apiKey: "AIzaSyDllhCt5rBItT1Rrd44SJtiZ9jmJGs0Q00",
   authDomain: "ghnotetaker-1abd0.firebaseio.com",
   databaseURL: "https://ghnotetaker-1abd0.firebaseio.com",
   storageBucket: "ghnotetaker-1abd0.firebaseio.com"
-};
-Firebase.initializeApp(config);
+}
 
-const Profile = React.createClass({
-  mixins: [ReactFireMixin],
-  getInitialState: function() {
-    return {
+const base = Rebase.createClass(config)
+
+class Profile extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
       notes: [],
       bio: {},
       repos: []
     }
-  },
-  componentDidMount: function() {
-     this.ref = new Firebase.database().ref('/')
-     this.init(this.props.params.username)
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.unbind('notes')
-    this.init(nextProps.params.username)
-  },
-  init: function(username) {
-     const childRef = this.ref.child(username)
-     this.bindAsArray(childRef, 'notes')
+  }
 
+  componentDidMount() {
+    console.log('componentDidMount')
+    this.ref && base.removeBinding(this.ref)
+    this.init(this.props.params.username)
+  }
+  componentWillReceiveProps(nextProps) {
+    this.init(nextProps.params.username)
+  }
+  init(username) {
+    console.log('init first')
+    this. ref = base.bindToState(username, {
+      context: this,
+      asArray: true,
+      state: 'notes'
+    })
      getGithubInfo(username)
      .then(function(data) {
        this.setState({
@@ -44,14 +47,16 @@ const Profile = React.createClass({
        })
      }.bind(this))
 
-  },
-  componentWillUnmount: function() {
-     this.unbind('notes')
-  },
-  handleAddNote: function(newNote) {
-     this.ref.child(this.props.params.username).child(this.state.notes.length).set(newNote)
-  },
-  render: function() {
+  }
+  componentWillUnmount() {
+    base.removeBinding(this.ref)
+  }
+  handleAddNote(newNote) {
+    base.post(this.props.params.username, {
+      data: this.state.notes.concat([newNote])
+    })
+  }
+  render() {
     return (
       <div className="row">
         <div className="col-md-4">
@@ -64,12 +69,12 @@ const Profile = React.createClass({
           <Notes
             username={this.props.params.username}
             notes={this.state.notes}
-            addNote={this.handleAddNote}
+            addNote={(newNote) => this.handleAddNote(newNote)}
             />
         </div>
       </div>
     )
   }
-})
+}
 
-module.exports = Profile
+export default Profile
