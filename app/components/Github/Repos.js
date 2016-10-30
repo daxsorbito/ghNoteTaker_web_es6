@@ -1,11 +1,7 @@
 import React from 'react'
 
-const Repos = React.createClass({
-  propTypes: {
-    username: React.PropTypes.string.isRequired,
-    repos: React.PropTypes.array.isRequired
-  },
-  render: function() {
+class Repos extends React.Component {
+  render() {
     const repos = this.props.repos.map((repo, index) => {
       return (
         <li className="list-group-item" key={index}>
@@ -23,6 +19,11 @@ const Repos = React.createClass({
       </div>
     )
   }
-})
+}
 
-module.exports = Repos
+Repos.propTypes = {
+  username: React.PropTypes.string.isRequired,
+  repos: React.PropTypes.array.isRequired
+}
+
+export default Repos
