@@ -25,7 +25,6 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
     this.ref && base.removeBinding(this.ref)
     this.init(this.props.params.username)
   }
@@ -33,7 +32,6 @@ class Profile extends React.Component {
     this.init(nextProps.params.username)
   }
   init(username) {
-    console.log('init first')
     this. ref = base.bindToState(username, {
       context: this,
       asArray: true,
