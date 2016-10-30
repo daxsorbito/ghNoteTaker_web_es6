@@ -2,21 +2,21 @@ import React from 'react'
 import { Router } from 'react-router'
 import { hashHistory } from 'react-router'
 
-const SearchGithub = React.createClass({
-  getRef: function(ref) {
+class SearchGitub extends React.Component {
+  getRef(ref) {
     this.usernameRef = ref
-  },
-  handleSubmit: function() {
+  }
+  handleSubmit() {
     const username = this.usernameRef.value
     this.usernameRef.value = ''
     hashHistory.push({pathname: "/profile/" + username})
-  },
-  render: function() {
+  }
+  render() {
     return (
       <div className="col-sm-12">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={() => this.handleSubmit}>
           <div className="form-group col-sm-7">
-            <input type="text" className="form-control" ref={this.getRef} />
+            <input type="text" className="form-control" ref={(ref) =>this.getRef(ref)} />
           </div>
           <div className="form-group col-sm-5">
             <button type="submit" className="btn btn-block btn-primary">Search Github</button>
@@ -25,6 +25,6 @@ const SearchGithub = React.createClass({
       </div>
     )
   }
-})
+}
 
-module.exports = SearchGithub
+export default SearchGithub
