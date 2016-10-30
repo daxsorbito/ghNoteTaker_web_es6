@@ -8,8 +8,10 @@ class SearchGithub extends React.Component {
   }
   handleSubmit() {
     const username = this.usernameRef.value
-    this.usernameRef.value = ''
-    hashHistory.push({pathname: "/profile/" + username})
+    if(username) {
+      this.usernameRef.value = ''
+      hashHistory.push({pathname: "/profile/" + username})
+    }
   }
   render() {
     return (
