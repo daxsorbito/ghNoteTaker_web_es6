@@ -2,7 +2,7 @@ import React from 'react'
 import { Router } from 'react-router'
 import { hashHistory } from 'react-router'
 
-class SearchGitub extends React.Component {
+class SearchGithub extends React.Component {
   getRef(ref) {
     this.usernameRef = ref
   }
