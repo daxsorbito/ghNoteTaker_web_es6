@@ -1,3 +1,6 @@
+# ReactJS sample application
+- this uses github api and also firebase
+
 ## Usage
 ```bash
 $ npm i
